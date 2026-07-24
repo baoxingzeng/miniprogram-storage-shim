@@ -1,0 +1,58 @@
+{
+  "name": "miniprogram-storage-shim",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Xingzeng Bao",
+  "homepage": "https://github.com/baoxingzeng/miniprogram-storage-shim",
+  "description": "localStorage and sessionStorage polyfill for mini programs.",
+  "type": "module",
+  "main": "dist/miniprogram-storage-shim.cjs.js",
+  "module": "dist/miniprogram-storage-shim.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist",
+    "!dist/types/**/*",
+    "!dist/cjs/types/**/*",
+    "!dist/esm/types/**/*"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./dev": {
+      "require": "./dist/cjs/dev.js",
+      "import": "./dist/esm/dev.js",
+      "types": "./dist/dev.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup --config",
+    "test": "echo \"Follow the instructions in tests/README.txt to run the tests.\" && exit 1"
+  },
+  "keywords": [
+    "miniprogram",
+    "localStorage",
+    "sessionStorage",
+    "polyfill"
+  ],
+  "dependencies": {
+    "fetch-xhr-shim": ">=1.1.0",
+    "miniprogram-platform": ">=1.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@rollup/plugin-babel": "^7.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "rollup": "^4.61.0",
+    "rollup-plugin-dts": "^6.4.1",
+    "tslib": "^2.8.1",
+    "uvu": "^0.5.6"
+  }
+}
