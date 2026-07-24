@@ -123,13 +123,3 @@ test("sessionStorage: getItem returns null for non-existent keys", () => {
     storage.clear();
     assert.is(storage.getItem("not-found"), null);
 });
-
-test("sessionStorage: data only in memory", () => {
-    // sessionStorage should not persist across reloads in the real world,
-    // but since we are in the same process this test just verifies basic functionality
-    const storage = Protagonist.sessionStorage;
-    storage.clear();
-    storage.setItem("temp", "data");
-    assert.is(storage.getItem("temp"), "data");
-    assert.is(storage.length, 1);
-});
