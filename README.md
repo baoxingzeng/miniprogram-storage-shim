@@ -51,6 +51,8 @@ console.log(sessionStorage.length);
 | `removeItem(key: string): void`             | 移除指定键值对                      |
 | `setItem(key: string, value: string): void` | 设置键的值                          |
 
+> 注：不支持 `storage` 事件（`StorageEvent`）。该事件主要用于浏览器跨标签页通信，在小程序场景中极少使用。
+
 ## 导出说明
 
 `localStorage` 和 `sessionStorage` 在支持原生实现的运行环境中会直接返回原生对象；以 `P` 为后缀的 `localStorageP` 和 `sessionStorageP` 则为 polyfill 实现，请按需使用。
