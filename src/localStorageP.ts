@@ -2,7 +2,7 @@ import { getPlatform } from "miniprogram-platform";
 import { setState, checkArgsLength } from "fetch-xhr-shim/dev";
 import { StorageP, normalizeKey, normalizeValue } from "./StorageP";
 
-const platform = getPlatform() as {
+const platform = /*#__PURE__*/getPlatform() as {
     name: string;
     mp: {
         getStorageSync: (key: string) => string;
@@ -138,7 +138,7 @@ function state(target: LocalStorageP) {
     return target.__LocalStorage__;
 }
 
-export const localStorageP = new LocalStorageP();
+export const localStorageP = /*#__PURE__*/new LocalStorageP();
 
 const localStorageE = (typeof localStorage !== "undefined" && localStorage) as typeof localStorage || localStorageP;
 export { localStorageE as localStorage };

@@ -68,7 +68,7 @@ function state(target: SessionStorageP) {
     return target.__SessionStorage__;
 }
 
-export const sessionStorageP = new SessionStorageP();
+export const sessionStorageP = /*#__PURE__*/new SessionStorageP();
 
 const sessionStorageE = (typeof sessionStorage !== "undefined" && sessionStorage) as typeof sessionStorage || sessionStorageP;
 export { sessionStorageE as sessionStorage };
