@@ -2,15 +2,21 @@ import { getPlatform } from "miniprogram-platform";
 import { setState, checkArgsLength } from "fetch-xhr-shim/dev";
 import { StorageP, normalizeKey, normalizeValue } from "./StorageP";
 
-const platform = /*#__PURE__*/getPlatform() as {
-    name: string;
-    mp: {
-        getStorageSync: (key: string) => string;
-        setStorageSync: (key: string, data: any) => void;
-        setStorage: (obj: { key: string, data: any }) => void;
-        removeStorageSync: (key: string) => void;
-    };
+const platform = {
+    value: /*#__PURE__*/getPlatform() as {
+        name: string;
+        mp: {
+            getStorageSync: (key: string) => string;
+            setStorageSync: (key: string, data: any) => void;
+            setStorage: (obj: { key: string, data: any }) => void;
+            removeStorageSync: (key: string) => void;
+        };
+    },
 };
+
+export function setPlatform(value: { name: string; mp: unknown; }) {
+    platform.value = value as typeof platform["value"];
+}
 
 class LocalStorageP extends StorageP {
     constructor() {
@@ -31,10 +37,10 @@ class LocalStorageP extends StorageP {
 
         for (let i = 0; i < keys.length; ++i) {
             let key = keys[i]!;
-            if (platform.name !== "Alipay" && platform.name !== "DingTalk") {
-                platform.mp.removeStorageSync(key);
+            if (platform.value.name !== "Alipay" && platform.value.name !== "DingTalk") {
+                platform.value.mp.removeStorageSync(key);
             } else { // @ts-ignore
-                platform.mp.removeStorageSync({ key: key });    // Alipay Mini Program
+                platform.value.mp.removeStorageSync({ key: key });    // Alipay Mini Program
             }
         }
     }
@@ -46,10 +52,10 @@ class LocalStorageP extends StorageP {
 
         return s.keys.indexOf(_key) < 0
             ? null
-            : normalizeValue((platform.name !== "Alipay" && platform.name !== "DingTalk")
-                ? platform.mp.getStorageSync(_key)
+            : normalizeValue((platform.value.name !== "Alipay" && platform.value.name !== "DingTalk")
+                ? platform.value.mp.getStorageSync(_key)
                 // @ts-ignore
-                : platform.mp.getStorageSync({ key: _key }).data    // Alipay Mini Program
+                : platform.value.mp.getStorageSync({ key: _key }).data    // Alipay Mini Program
             );
     }
 
@@ -67,10 +73,10 @@ class LocalStorageP extends StorageP {
             s.keys = s.keys.filter(x => x !== _key);
             s.persist();
 
-            if (platform.name !== "Alipay" && platform.name !== "DingTalk") {
-                platform.mp.removeStorageSync(_key);
+            if (platform.value.name !== "Alipay" && platform.value.name !== "DingTalk") {
+                platform.value.mp.removeStorageSync(_key);
             } else { // @ts-ignore
-                platform.mp.removeStorageSync({ key: _key });   // Alipay Mini Program
+                platform.value.mp.removeStorageSync({ key: _key });   // Alipay Mini Program
             }
         }
     }
@@ -87,10 +93,10 @@ class LocalStorageP extends StorageP {
                 s.persist();
             }
 
-            if (platform.name !== "Alipay" && platform.name !== "DingTalk") {
-                platform.mp.setStorageSync(_key, _value);
+            if (platform.value.name !== "Alipay" && platform.value.name !== "DingTalk") {
+                platform.value.mp.setStorageSync(_key, _value);
             } else { // @ts-ignore
-                platform.mp.setStorageSync({ key: _key, data: _value });    // Alipay Mini Program
+                platform.value.mp.setStorageSync({ key: _key, data: _value });    // Alipay Mini Program
             }
         }
     }
@@ -105,14 +111,14 @@ class LocalStorageState {
     get storageKey() { return "__STORAGE_KEYS_MPHTTPX__"; }
 
     restore() {
-        if (!platform) return;
+        if (!platform.value) return;
 
         this.keys = ((function (this: LocalStorageState) {
             try {
-                let data: string = (platform.name !== "Alipay" && platform.name !== "DingTalk")
-                    ? platform.mp.getStorageSync(this.storageKey)
+                let data: string = (platform.value.name !== "Alipay" && platform.value.name !== "DingTalk")
+                    ? platform.value.mp.getStorageSync(this.storageKey)
                     // @ts-ignore
-                    : platform.mp.getStorageSync({ key: this.storageKey }).data;    // Alipay Mini Program
+                    : platform.value.mp.getStorageSync({ key: this.storageKey }).data;    // Alipay Mini Program
 
                 let parsed = data ? JSON.parse(data) as Array<string> : [];
                 return Array.isArray(parsed) ? parsed : [];
@@ -123,10 +129,10 @@ class LocalStorageState {
     }
 
     persist() {
-        if (!platform) return;
+        if (!platform.value) return;
 
         setTimeout((function (this: LocalStorageState) {
-            platform.mp.setStorage({
+            platform.value.mp.setStorage({
                 key: this.storageKey,
                 data: JSON.stringify(this.keys),
             });
