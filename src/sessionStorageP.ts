@@ -1,4 +1,4 @@
-import { setState, checkArgsLength } from "fetch-xhr-shim/dev";
+import { setState, checkArgsLength } from "fetch-xhr-shim/internal";
 import { StorageP, normalizeKey, normalizeValue } from "./StorageP";
 
 class SessionStorageP extends StorageP {
@@ -70,5 +70,5 @@ function state(target: SessionStorageP) {
 
 export const sessionStorageP = /*#__PURE__*/new SessionStorageP();
 
-const sessionStorageE = (typeof sessionStorage !== "undefined" && sessionStorage) as typeof sessionStorage || sessionStorageP;
+const sessionStorageE = /*#__PURE__*/function () { return (typeof sessionStorage !== "undefined" && sessionStorage) as typeof sessionStorage || sessionStorageP; }();
 export { sessionStorageE as sessionStorage };

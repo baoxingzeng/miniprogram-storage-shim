@@ -1,5 +1,5 @@
 import { getPlatform } from "miniprogram-platform";
-import { setState, checkArgsLength } from "fetch-xhr-shim/dev";
+import { setState, checkArgsLength } from "fetch-xhr-shim/internal";
 import { StorageP, normalizeKey, normalizeValue } from "./StorageP";
 
 const platform = {
@@ -146,5 +146,5 @@ function state(target: LocalStorageP) {
 
 export const localStorageP = /*#__PURE__*/new LocalStorageP();
 
-const localStorageE = (typeof localStorage !== "undefined" && localStorage) as typeof localStorage || localStorageP;
+const localStorageE = /*#__PURE__*/function () { return (typeof localStorage !== "undefined" && localStorage) as typeof localStorage || localStorageP; }();
 export { localStorageE as localStorage };

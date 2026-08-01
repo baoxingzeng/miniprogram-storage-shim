@@ -1,4 +1,4 @@
-import { _Symbol } from "fetch-xhr-shim/dev";
+import { _Symbol } from "fetch-xhr-shim/internal";
 
 export abstract class StorageP implements Storage {
     constructor() {

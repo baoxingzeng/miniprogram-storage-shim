@@ -7,14 +7,14 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 export default [
     // CommonJS
     {
-        input: ["src/index.ts", "src/dev.ts"],
+        input: ["src/index.ts", "src/internal.ts"],
         output: {
             dir: "dist/cjs",
             format: "cjs",
             preserveModules: true,
         },
         external: [
-            "fetch-xhr-shim/dev",
+            "fetch-xhr-shim/internal",
             "miniprogram-platform",
         ],
         plugins: [
@@ -69,14 +69,14 @@ export default [
 
     // ES6
     {
-        input: ["src/index.ts", "src/dev.ts"],
+        input: ["src/index.ts", "src/internal.ts"],
         output: {
             dir: "dist/esm",
             format: "es",
             preserveModules: true,
         },
         external: [
-            "fetch-xhr-shim/dev",
+            "fetch-xhr-shim/internal",
             "miniprogram-platform",
         ],
         plugins: [
@@ -129,6 +129,49 @@ export default [
         ],
     },
 
+    // UMD (polyfill singlefile)
+    {
+        input: "src/polyfill.ts",
+        output: {
+            file: "dist/miniprogram-storage-shim.umd.js",
+            format: "umd",
+            name: "MPLS",
+        },
+        plugins: [
+            typescript({
+                declarationDir: "dist/types",
+                moduleResolution: "bundler",
+            }),
+            nodeResolve(),
+            babel({
+                babelHelpers: "bundled",
+                extensions: [".js", ".jsx", ".es6", ".es", ".mjs", ".ts", ".tsx"],
+            }),
+        ],
+    },
+
+    // UMD (polyfill singlefile, minimized)
+    {
+        input: "src/polyfill.ts",
+        output: {
+            file: "dist/miniprogram-storage-shim.umd.min.js",
+            format: "umd",
+            name: "MPLS",
+        },
+        plugins: [
+            typescript({
+                declarationDir: "dist/types",
+                moduleResolution: "bundler",
+            }),
+            nodeResolve(),
+            babel({
+                babelHelpers: "bundled",
+                extensions: [".js", ".jsx", ".es6", ".es", ".mjs", ".ts", ".tsx"],
+            }),
+            terser(),
+        ],
+    },
+
     // Types
     {
         input: "dist/esm/types/index.d.ts",
@@ -139,11 +182,11 @@ export default [
         plugins: [dts()],
     },
 
-    // Types (dev)
+    // Types (internal)
     {
-        input: "dist/esm/types/dev.d.ts",
+        input: "dist/esm/types/internal.d.ts",
         output: {
-            file: "dist/dev.d.ts",
+            file: "dist/internal.d.ts",
             format: "es",
         },
         plugins: [dts()],
