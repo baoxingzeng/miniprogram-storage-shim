@@ -18,7 +18,7 @@
 <script lang="ts">
 import "../../mphttpx";
 // @ts-ignore
-import { Notify, testConfig } from  "../../../../utils";
+import { Notify } from  "../../../../utils";
 
 export default {
     data() {

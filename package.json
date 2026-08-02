@@ -39,7 +39,6 @@
   "keywords": [
     "miniprogram",
     "localStorage",
-    "sessionStorage",
     "polyfill"
   ],
   "dependencies": {
